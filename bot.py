@@ -70,7 +70,11 @@ def create_calendar(year: int = datetime.now().year, month: int = datetime.now()
             if day == 0:
                 keyboard_days.add(InlineKeyboardButton(text=" ", callback_data="ignore"))
             else:
-                keyboard_days.add(InlineKeyboardButton(text=str(day), callback_data=f"day_{day}_{month}_{year}"))
+                if f"{year}-{month}-{day}" in [shift['date'] for shift in shift_data]:
+                    keyboard_days.add(InlineKeyboardButton(text='✅', callback_data=f"day_{day}_{month}_{year}",
+                                                           parse_mode='HTML'))
+                else:
+                    keyboard_days.add(InlineKeyboardButton(text=str(day), callback_data=f"day_{day}_{month}_{year}"))
 
     # Switching months back and forth
     keyboard.attach(keyboard_days.adjust(7))
