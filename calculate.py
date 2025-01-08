@@ -113,10 +113,10 @@ def salary_calc(shifts, bank_hlds_list):
 def week_count(date):
     year = date.year
     fiscal_year_starts = datetime.strptime(f'{year}-04-06', '%Y-%m-%d')
-    week_day = fiscal_year_starts.weekday()
     if date < fiscal_year_starts:
         year -= 1
         fiscal_year_starts = datetime.strptime(f'{year}-04-06', '%Y-%m-%d')
+    week_day = fiscal_year_starts.weekday()
     number = ((date - fiscal_year_starts).days + week_day) // 7 + 1
     return number
 
