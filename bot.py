@@ -53,7 +53,12 @@ shift_data = []  # List for storing shift data
 
 
 # Function for creating calendar
-def create_calendar(year: int = datetime.now().year, month: int = datetime.now().month):
+def create_calendar(year: int = None, month: int = None):
+    if year is None or month is None:
+        now = datetime.now()
+        year = now.year
+        month = now.month
+
     keyboard = InlineKeyboardBuilder()
     keyboard_days = InlineKeyboardBuilder()
 
