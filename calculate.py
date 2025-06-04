@@ -82,6 +82,7 @@ def check_rate(weekday, hour, occupation):
 # Function to calculate the salary
 def salary_calc(shifts, bank_hlds_list):
     salary = []
+    shift_details = []
     for week in shifts:
         week_wage = 0
         for i in shifts[week]:
@@ -95,8 +96,18 @@ def salary_calc(shifts, bank_hlds_list):
                                            shifts[week][i]['time'].hour + shifts[week][i]['duration'].hour,
                                            shifts[week][i]['profession'])) * shifts[week][i]['time'].minute / 60)
             week_wage += shift_wage
-        salary.append(f'{week} - {week_wage}')
-    return salary
+    #     salary.append(f'{week} - {week_wage}')
+    # return salary
+
+            # Add shift details
+            shift_details.append({
+                'week': week,
+                'date': shifts[week][i]['date'].strftime('%Y-%m-%d'),
+                'hours': shifts[week][i]['duration'].hour,
+                'amount': round(shift_wage, 2)
+            })
+        salary.append(f'{week} - {round(week_wage, 2)}')
+    return salary, shift_details
 
 
 # Using for testing

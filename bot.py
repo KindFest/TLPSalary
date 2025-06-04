@@ -223,12 +223,24 @@ async def process_calculate(callback_query: CallbackQuery, state: FSMContext):
                                       'profession': shift['profession']}
         i += 1
     bank_holidays_list = [datetime.strptime(x, '%Y-%m-%d') for x in get_bh('england-and-wales')]
-    salary_calc = calc.salary_calc(shift_dict, bank_holidays_list)
+    # salary_calc = calc.salary_calc(shift_dict, bank_holidays_list)
+    weekly_totals, shift_details = calc.salary_calc(shift_dict, bank_holidays_list)
+
+    # Format the detailed output
+    detailed_output = []
+    for shift in shift_details:
+        detailed_output.append(f"Date: {shift['date']}, Hours: {shift['hours']}, Amount: £{shift['amount']}")
+
     n = '\n'
-    result_message = (f"Total salary: \n{n.join(salary_calc)}\n\nThe first number is the week number, "
-                      f"the second is the weekly salary."
-                      f"\nThis is the gross salary. And don't forget that all hours after midnight on Sunday will be "
-                      f"paid a week later.")
+    # result_message = (f"Total salary: \n{n.join(salary_calc)}\n\nThe first number is the week number, "
+    #                   f"the second is the weekly salary."
+    #                   f"\nThis is the gross salary. And don't forget that all hours after midnight on Sunday will be "
+    #                   f"paid a week later.")
+
+    result_message = (f"Shift details:\n{n.join(detailed_output)}\n\n"
+                     f"Weekly totals:\n{n.join(weekly_totals)}\n\n"
+                     f"This is the gross salary. And don't forget that all hours after midnight on Sunday will be "
+                     f"paid a week later.")
 
     await callback_query.message.edit_text(result_message if shift_data else "No shifts recorded.")
     shift_data.clear()  # Clear shift_data after calculation
